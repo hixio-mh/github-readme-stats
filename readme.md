@@ -28,7 +28,8 @@
 
   <p align="center">
     <a href="#demo">View Demo</a>
-    ·
+    ·[github-readme-stats-master.zip](https://github.com/hixio-mh/github-readme-stats/files/6913653/github-readme-stats-master.zip)
+
     <a href="https://github.com/anuraghazra/github-readme-stats/issues/new/choose">Report Bug</a>
     ·
     <a href="https://github.com/anuraghazra/github-readme-stats/issues/new/choose">Request Feature</a>
