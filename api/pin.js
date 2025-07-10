@@ -1,4 +1,5 @@
 import { renderRepoCard } from "../src/cards/repo-card.js";
+import escapeHtml from "escape-html";
 import { blacklist } from "../src/common/blacklist.js";
 import {
   clampValue,
@@ -74,7 +75,7 @@ export default async (req, res) => {
       renderRepoCard(repoData, {
         hide_border: parseBoolean(hide_border),
         title_color,
-        icon_color,
+        icon_color: escapeHtml(icon_color),
         text_color,
         bg_color,
         theme,
