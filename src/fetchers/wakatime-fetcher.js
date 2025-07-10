@@ -12,11 +12,25 @@ const fetchWakatimeStats = async ({ username, api_domain }) => {
     throw new MissingParamError(["username"]);
   }
 
+  // Allow-list for trusted API domains
+  const allowedDomains = ["wakatime.com", "api.wakatime.com"];
+  const sanitizedDomain = api_domain
+    ? api_domain.replace(/\/$/gi, "")
+    : "wakatime.com";
+
+  if (!allowedDomains.includes(sanitizedDomain)) {
+    throw new CustomError(
+      `Invalid API domain: '${sanitizedDomain}'`,
+      "INVALID_API_DOMAIN",
+    );
+  }
+
+  // Sanitize username to prevent malicious input
+  const sanitizedUsername = encodeURIComponent(username);
+
   try {
     const { data } = await axios.get(
-      `https://${
-        api_domain ? api_domain.replace(/\/$/gi, "") : "wakatime.com"
-      }/api/v1/users/${username}/stats?is_including_today=true`,
+      `https://${sanitizedDomain}/api/v1/users/${sanitizedUsername}/stats?is_including_today=true`,
     );
 
     return data.data;
