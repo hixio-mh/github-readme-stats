@@ -8,6 +8,7 @@ import {
 } from "../src/common/utils.js";
 import { fetchTopLanguages } from "../src/fetchers/top-languages-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import escapeHtml from "escape-html";
 
 export default async (req, res) => {
   const {
@@ -90,7 +91,7 @@ export default async (req, res) => {
         card_width: parseInt(card_width, 10),
         hide: parseArray(hide),
         title_color,
-        text_color,
+        text_color: text_color ? escapeHtml(text_color) : null,
         bg_color,
         theme,
         layout,
