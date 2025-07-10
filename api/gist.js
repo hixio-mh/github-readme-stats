@@ -4,6 +4,7 @@ import {
   renderError,
   parseBoolean,
 } from "../src/common/utils.js";
+import escapeHtml from "escape-html";
 import { isLocaleAvailable } from "../src/translations.js";
 import { renderGistCard } from "../src/cards/gist-card.js";
 import { fetchGist } from "../src/fetchers/gist-fetcher.js";
@@ -29,7 +30,7 @@ export default async (req, res) => {
   if (locale && !isLocaleAvailable(locale)) {
     return res.send(
       renderError("Something went wrong", "Language not found", {
-        title_color,
+        title_color: escapeHtml(title_color),
         text_color,
         bg_color,
         border_color,
@@ -78,7 +79,7 @@ export default async (req, res) => {
     ); // Use lower cache period for errors.
     return res.send(
       renderError(err.message, err.secondaryMessage, {
-        title_color,
+        title_color: escapeHtml(title_color),
         text_color,
         bg_color,
         border_color,
