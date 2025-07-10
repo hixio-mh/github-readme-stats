@@ -17,12 +17,13 @@ const fetchWakatimeStats = async ({ username, api_domain }) => {
   let sanitizedDomain;
   if (api_domain) {
     try {
-      const host = new URL(`https://${api_domain.replace(/\/$/gi, "")}`).host;
+      const url = new URL(`https://${api_domain.replace(/\/$/gi, "")}`);
+      const host = url.hostname;
       const isAllowedDomain = allowedDomains.some(
         (allowedDomain) =>
           host === allowedDomain || host.endsWith(`.${allowedDomain}`)
       );
-      if (!isAllowedDomain) {
+      if (!isAllowedDomain || url.protocol !== "https:") {
         throw new CustomError(
           `Invalid API domain: '${api_domain}'`,
           "INVALID_API_DOMAIN",
@@ -43,9 +44,9 @@ const fetchWakatimeStats = async ({ username, api_domain }) => {
   const sanitizedUsername = encodeURIComponent(username);
 
   try {
-    const { data } = await axios.get(
-      `https://${sanitizedDomain}/api/v1/users/${sanitizedUsername}/stats?is_including_today=true`,
-    );
+    const url = new URL(`/api/v1/users/${sanitizedUsername}/stats`, `https://${sanitizedDomain}`);
+    url.searchParams.set("is_including_today", "true");
+    const { data } = await axios.get(url.toString());
 
     return data.data;
   } catch (err) {
