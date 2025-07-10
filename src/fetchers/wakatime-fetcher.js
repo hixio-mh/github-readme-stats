@@ -18,7 +18,22 @@ const fetchWakatimeStats = async ({ username, api_domain }) => {
     ? api_domain.replace(/\/$/gi, "")
     : "wakatime.com";
 
-  if (!allowedDomains.includes(sanitizedDomain)) {
+  let host;
+  try {
+    host = new URL(`https://${sanitizedDomain}`).host;
+  } catch (err) {
+    throw new CustomError(
+      `Invalid API domain: '${sanitizedDomain}'`,
+      "INVALID_API_DOMAIN",
+    );
+  }
+
+  const isAllowedDomain = allowedDomains.some(
+    (allowedDomain) =>
+      host === allowedDomain || host.endsWith(`.${allowedDomain}`)
+  );
+
+  if (!isAllowedDomain) {
     throw new CustomError(
       `Invalid API domain: '${sanitizedDomain}'`,
       "INVALID_API_DOMAIN",
