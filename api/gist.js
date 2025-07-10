@@ -81,7 +81,7 @@ export default async (req, res) => {
       renderError(err.message, err.secondaryMessage, {
         title_color: escapeHtml(title_color),
         text_color: escapeHtml(text_color),
-        bg_color,
+        bg_color: escapeHtml(bg_color),
         border_color,
         theme,
       }),
