@@ -34,9 +34,9 @@ alert-autofix-3
       host === allowedDomain || host.endsWith(`.${allowedDomain}`)
   );
 
-  if (!isAllowedDomain)
-  if (!allowedDomains.includes(sanitizedDomain)) {
- master
+  // Ensure host matches or is a subdomain of an allowed domain
+
+  if (!isAllowedDomain) {
     throw new CustomError(
       `Invalid API domain: '${sanitizedDomain}'`,
       "INVALID_API_DOMAIN",
