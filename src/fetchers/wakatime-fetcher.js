@@ -14,33 +14,29 @@ const fetchWakatimeStats = async ({ username, api_domain }) => {
 
   // Allow-list for trusted API domains
   const allowedDomains = ["wakatime.com", "api.wakatime.com"];
-  const sanitizedDomain = api_domain
-    ? api_domain.replace(/\/$/gi, "")
-    : "wakatime.com";
-
-alert-autofix-3
-  let host;
-  try {
-    host = new URL(`https://${sanitizedDomain}`).host;
-  } catch (err) {
-    throw new CustomError(
-      `Invalid API domain: '${sanitizedDomain}'`,
-      "INVALID_API_DOMAIN",
-    );
-  }
-
-  const isAllowedDomain = allowedDomains.some(
-    (allowedDomain) =>
-      host === allowedDomain || host.endsWith(`.${allowedDomain}`)
-  );
-
-  // Ensure host matches or is a subdomain of an allowed domain
-
-  if (!isAllowedDomain) {
-    throw new CustomError(
-      `Invalid API domain: '${sanitizedDomain}'`,
-      "INVALID_API_DOMAIN",
-    );
+  let sanitizedDomain;
+  if (api_domain) {
+    try {
+      const host = new URL(`https://${api_domain.replace(/\/$/gi, "")}`).host;
+      const isAllowedDomain = allowedDomains.some(
+        (allowedDomain) =>
+          host === allowedDomain || host.endsWith(`.${allowedDomain}`)
+      );
+      if (!isAllowedDomain) {
+        throw new CustomError(
+          `Invalid API domain: '${api_domain}'`,
+          "INVALID_API_DOMAIN",
+        );
+      }
+      sanitizedDomain = host;
+    } catch (err) {
+      throw new CustomError(
+        `Invalid API domain: '${api_domain}'`,
+        "INVALID_API_DOMAIN",
+      );
+    }
+  } else {
+    sanitizedDomain = "wakatime.com";
   }
 
   // Sanitize username to prevent malicious input
