@@ -394,7 +394,7 @@ const renderError = (message, secondaryMessage = "", options = {}) => {
     }</text>
     <text data-testid="message" x="25" y="55" class="text small">
       <tspan x="25" dy="18">${encodeHTML(message)}</tspan>
-      <tspan x="25" dy="18" class="gray">${secondaryMessage}</tspan>
+      <tspan x="25" dy="18" class="gray">${encodeHTML(secondaryMessage)}</tspan>
     </text>
     </svg>
   `;
